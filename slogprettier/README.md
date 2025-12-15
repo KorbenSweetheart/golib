@@ -1,0 +1,1 @@
+# Slog prettier for local development only
