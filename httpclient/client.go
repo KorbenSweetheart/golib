@@ -45,7 +45,8 @@ func (c *Client) DoRequest(ctx context.Context, path string) (data []byte, err e
 		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
-	body, err := io.ReadAll(resp.Body)
+	// Limit reading to 10MB to prevent memory exhaustion
+	body, err := io.ReadAll(io.LimitReader(resp.Body, 10*1024*1024))
 	if err != nil {
 		return nil, fmt.Errorf("can't read body: %w", err)
 	}
